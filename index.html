@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anubhav JSON Viewer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .wrapper {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: row;
+            width: 80%;
+            height: 80%;
+        }
+
+        .left-panel,
+        .right-panel {
+            flex: 1;
+            padding: 10px;
+        }
+
+        .left-panel {
+            border-right: 1px solid #ccc;
+            overflow: auto;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        #json-input {
+            width: calc(100% - 20px);
+            height: calc(100% - 110px);
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: none;
+        }
+
+        #btn-json-viewer {
+            background-color: #0578ba;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            width: calc(100% - 20px);
+        }
+
+        #btn-json-viewer:hover {
+            background-color: #045a8d;
+        }
+
+        pre#json-renderer {
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 5px;
+            overflow: auto;
+            height: calc(100% - 20px);
+        }
+
+        /* Syntax highlighting for JSON objects */
+        ul.json-dict,
+        ol.json-array {
+            list-style-type: none;
+            margin: 0 0 0 1px;
+            border-left: 1px dotted #ccc;
+            padding-left: 2em;
+        }
+
+        .json-string {
+            color: #0B7500;
+        }
+
+        .json-literal {
+            color: #1A01CC;
+            font-weight: bold;
+        }
+
+        /* Toggle button */
+        a.json-toggle {
+            position: relative;
+            color: inherit;
+            text-decoration: none;
+        }
+
+        a.json-toggle:focus {
+            outline: none;
+        }
+
+        a.json-toggle:before {
+            color: #aaa;
+            content: "\25BC"; /* down arrow */
+            position: absolute;
+            display: inline-block;
+            width: 1em;
+            left: -1em;
+        }
+
+        a.json-toggle.collapsed:before {
+            content: "\25B6"; /* left arrow */
+        }
+
+        /* Collapsable placeholder links */
+        a.json-placeholder {
+            color: #aaa;
+            padding: 0 1em;
+            text-decoration: none;
+       
+            a.json-placeholder:hover {
+            text-decoration: underline;
+        }
+
+        pre.modal {
+            word-break: break-all;
+            word-wrap: break-word;
+            padding: 52px;
+        }
+
+        #error-message {
+            color: #FF0000;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body translate="no">
+    <div class="wrapper">
+        <div class="left-panel">
+            <h1>Anubhav JSON Viewer</h1>
+            <textarea id="json-input" autocomplete="off" placeholder="Enter JSON here"></textarea>
+            <button id="btn-json-viewer">View JSON</button>
+            <div id="error-message"></div>
+        </div>
+        <div class="right-panel">
+            <pre id="json-renderer"></pre>
+        </div>
+    </div>
+
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
+    <script src='https://www.jqueryscript.net/demo/jQuery-Plugin-For-Easily-Readable-JSON-Data-Viewer/json-viewer/jquery.json-viewer.js'></script>
+    <script>
+        $(function () {
+            $('#btn-json-viewer').click(function () {
+                try {
+                    var input = JSON.parse($('#json-input').val());
+                    $('#json-renderer').empty().json_viewer(input);
+                    $('#error-message').text('');
+                } catch (error) {
+                    $('#error-message').text("Invalid JSON: " + error);
+                }
+            });
+        });
+    </script>
+</body>
